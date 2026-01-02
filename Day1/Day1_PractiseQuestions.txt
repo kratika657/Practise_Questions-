@@ -1,0 +1,128 @@
+Q1) You are designing a BankAccount class with fields of accountNumber, balance,
+and accountHolderName.
+a) Should balance be public or not? Justify
+b) How would you control deposits and withdrawals using methods?
+c) How does encapsulation help enforce banking rules?
+
+a) No, balance should not be public. Because it represents the sensitive financial data. If it is public then anyone can modify it ( for ex: balance = -1000). It should be private to protect the data security and integrity. 
+
+b) By using public methods which validate rules before changing the balance.
+
+  class BankAccount {
+    private double balance;
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance = balance + amount;
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance = balance - amount;
+        }
+    }
+}
+
+c) Encapsulation helps to enforce the banking rules by hiding the internal data / by making balance private. Prevents invalid operations like Negative deposits, Excess withdrawals, balance manipulation.
+It ensures that all the changes are done through methods where rules will be checked.
+
+
+Q2) A withdrawal fails due to insufficient balance.
+ a) Would you use a checked or unchecked exception?
+ b) Why is exception handling critical?
+ c) How would a custom exception improve code clarity?
+
+a)Checked exception
+  Insufficient balance is a banking rule violation, not a programming mistake.
+  The caller must handle this situation for example, by showing an error message to the user.
+  Checked exceptions force handling at compile time.
+Ex: InsufficientBalanceException extends Exception
+
+b) Exception handling is critical because it helps the application deal with problems without breaking completely.
+  It ensures the system remains stable and data is not left in an inconsistent state.Proper exception handling also allows the application to show clear and user-friendly error messages, so users understand what happened.
+
+c) A custom exceptions, it clearly represents the exact problem (InsufficientBalanceException).
+  Makes code more readable and self-explanatory.
+  Avoids using generic exceptions like Exception or RuntimeException.
+  Helps developers understand business rules quickly.
+
+
+Q3) An e-commerce system supports PhysicalProduct and DigitalProduct.
+ a) What common behaviors would you abstract
+ b) Would you use an abstract class or interface?
+
+a) Some common behaviours for both PhysicalProduct and DigitalProduct includes: 
+   getPrice()
+   applyDiscount()
+   calculateFinalPrice()
+   getProductDetails()
+   purchase()
+
+b) Both product types share common state (for ex: productId, name, price).
+Some methods can have common implementations (like discount calculation).
+Abstract classes allow both fields and methods.
+
+
+Q4) Polymorphism in Java means one action can behave in different ways, depending on the object that is performing it.
+ It is used to make code flexible and reusable, to support dynamic behavior, To reduce code complexity. 
+
+a) Compile-time polymorphism happens during compilation. The compiler decides which method to call based on the method signature.
+It is achieved using method overloading.(Method overloading means having multiple methods with the same name in the same class, but with different parameters.)
+class Calculator {
+    int add(int a, int b) {
+        return a + b;
+    }
+
+    int add(int a, int b, int c) {
+        return a + b + c;
+    }
+public static void main(String[] args) {
+        Calculator calc = new Calculator();
+
+        int res1 = calc.add(10, 20);
+        int res2 = calc.add(10, 20, 30);
+
+        System.out.println("Adding two numbers: " + res1);
+        System.out.println("Adding three numbers: " + res2);
+    }
+}
+
+Output : Adding two numbers: 30
+         Adding three numbers: 60
+
+Runtime polymorphism happens while the program is running. The method call is resolved at runtime, not during compilation.This is achieved using method overriding.(Method overriding means a child class provides its own implementation of a method that already exists in the parent class.)
+class Animal {
+    void sound() {
+        System.out.println("Animal makes sound");
+    }
+}
+class Dog extends Animal {
+
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Animal animal = new Dog();
+        animal.sound();         
+    }
+}
+
+Output: Dog barks
+
+b) Runtime polymorphism is achieved through method overriding.
+  In method overriding, the child class provides its own version of a method from the parent class, and the method that gets executed is determined at runtime based on the actual object.
+
+
+c) Runtime polymorphism is important in real applications because it allows programs to be more flexible, maintainable, and scalable.
+* Flexibility:
+The same code can work with different object types. Example, A payment system can process CreditCardPayment or PhonepePayment using a common Payment reference.
+
+* Dynamic behavior:
+Decisions about which method to execute are made at runtime, allowing more intelligent and context-aware behavior.
+
+* Code reusability and cleaner design:
+You can write generic code for a parent class and let child classes provide specific behavior.
+Reduces duplicated code and keeps the system organized.
