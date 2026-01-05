@@ -1,0 +1,70 @@
+Q1. You need to store a list of customer IDs where:
+ Order of insertion must be preserved
+ Duplicate IDs are allowed
+
+- Which Java collection would you use and why?
+I would prefer ArrayList, because it Maintains insertion order, and also allows the duplicate elements. 
+It is simple and efficient for storing IDs in sequence.
+
+- What would change if duplicates were not allowed?
+Instead of ArrayList, I would use LinkedHashSet. Because it doesn't allow duplicates. and also it preserves insertion order. 
+Here duplicate values will be automatically ignored.
+
+Q2. In a multi-threaded application, multiple threads update a shared collection.
+
+  Why are normal collections like ArrayList or HashMap not thread-safe?
+  Because they are not synchronized. Multiple threads can modify data at the same time which leads to race conditions, data inconsistency.
+
+  Name one thread-safe collection in Java.
+  ConcurrentHashMap - It is a thread-safe Map in Java,  which allows multiple threads to read and write simultaneously
+
+  When would you prefer a Concurrent collection over Collections.synchronizedList()?
+  When there is high concurrency and  also when better performance is needed. Concurrent collections use fine-grained locking, 
+allowing multiple threads to read/write safely synchronizedList() uses single lock, causing more thread contention.
+
+
+Q3. If an ArrayList is initialized with a size of 25 and a 26th element is added, what
+happens internally?
+When an ArrayList is initialized with a size of 25, it means its initial capacity is 25, not that it can only hold 25 elements. 
+Internally, ArrayList uses an array to store elements. The internal array is full (capacity = 25, size = 25).
+ArrayList automatically increases its capacity. It creates a new larger array (by default, new capacity = old capacity × 1.5).
+Copies all existing elements to the new array.
+The 26th element is then added to the new array.
+
+Q4. You are given a list of employee names where:
+  Names may repeat
+  Case should be treated as same ("John" and "john")
+Your task is to:
+1. Remove duplicates
+2. Preserve the original insertion order
+3. Print the unique employee names
+Input: ["John", "Alice", "john", "Bob", Alice", "BOB"]
+Output:
+John
+Alice
+Bob
+
+package com.java.spr;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+public class UniqueEmployees {
+  public static void main(String[] args) {
+    String[] employess = {"John", "Alice", "john", "Bob", "Alice", "BOB"};
+    Set<String> uniqueEmployees = new LinkedHashSet<>();
+    Set<String>  lower = new HashSet<>();
+
+    for (String name : employess) {
+      String lowerName = name.toLowerCase();
+      if(!lower.contains(lowerName)) {
+        uniqueEmployees.add(name);
+        lower.add(lowerName);
+      }
+    }
+    for (String name : uniqueEmployees) {
+      System.out.println(name);
+    }
+  }
+}
